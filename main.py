@@ -20,7 +20,7 @@ app = FastAPI(title="Shopping Mall Analytics")
 # --------------------------
 # Load your data (CSV)
 # --------------------------
-df = pd.read_csv(r"customer_shopping_data.csv", parse_dates=['invoice_date'])
+df = pd.read_csv("customer_shopping_data.csv", parse_dates=['invoice_date'])
 
 @app.get("/")
 def home():
@@ -1173,3 +1173,4 @@ def campaign_simulation():
     
 
     return HTMLResponse(content=html_content)
+
