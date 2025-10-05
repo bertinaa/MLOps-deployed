@@ -1,0 +1,3 @@
+git add .python-version
+git commit -m "Force Python 3.11 for compatibility"
+git push
