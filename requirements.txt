@@ -7,4 +7,3 @@ seaborn==0.13.2
 streamlit==1.39.0
 requests==2.32.3
 beautifulsoup4==4.12.3
-pillow==11.0.0
