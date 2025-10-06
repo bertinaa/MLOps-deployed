@@ -17,6 +17,8 @@ def fig_to_base64(fig):
 
 app = FastAPI(title="Shopping Mall Analytics")
 
+
+
 # --------------------------
 # Load your data (CSV)
 # --------------------------
@@ -26,9 +28,24 @@ df = pd.read_csv("customer_shopping_data.csv", parse_dates=['invoice_date'])
 def home():
     return {"message": "Welcome to the Shopping Mall Analytics API! Visit /docs for API docs."}
 
-################################################## debugging
+# --- figuring out which date format works the best-
+def try_parse_date(s, dayfirst):
+    return pd.to_datetime(s, errors='coerce', dayfirst=dayfirst)
 
+d1 = try_parse_date(df['invoice_date'], dayfirst=False)  # assume month/day/year
+d2 = try_parse_date(df['invoice_date'], dayfirst=True)   # assume day/month/year
 
+# Count how many parsing failures (NaT = Not a Time) under each option
+count_nat_d1 = d1.isna().sum()
+count_nat_d2 = d2.isna().sum()
+
+# Choose whichever gives fewer failures
+if count_nat_d2 < count_nat_d1:
+    df['invoice_date'] = d2
+    print("Using dayfirst=True for invoice_date parsing.")
+else:
+    df['invoice_date'] = d1
+    print("Using dayfirst=False for invoice_date parsing.")
 # --------------------------
 # Mall & Region performance chart endpoint
 # --------------------------
@@ -1173,4 +1190,5 @@ def campaign_simulation():
     
 
     return HTMLResponse(content=html_content)
+
 
